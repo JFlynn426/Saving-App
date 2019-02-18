@@ -16,3 +16,16 @@ html {
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
+.row {
+  text-align: center;
+  max-width: 500px;
+  margin: auto;
+}
+.input-group {
+  padding: 50px 0 10px 0;
+}
+.goal {
+  padding: 20px 0 0 0;
+  display: flex;
+  justify-content: space-around;
+}
