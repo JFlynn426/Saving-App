@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import classnames from 'classnames';
+import axios from 'axios'
 
 export class Home extends Component {
   constructor(props) {
@@ -21,6 +22,9 @@ export class Home extends Component {
     }
   }
   static displayName = Home.name;
+  componentDidMount = () => {
+
+  }
 
   render () {
     return (
@@ -44,6 +48,7 @@ export class Home extends Component {
           </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
+        <h1>College Fund</h1>
           <TabPane tabId="1">
             <Row>
               <Col sm="12">
