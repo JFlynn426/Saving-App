@@ -68,14 +68,14 @@ export class Home extends Component {
               <Input placeholder="Amount" type="number" step="1" />
               <InputGroupAddon addonType="append">.00</InputGroupAddon>
                 </InputGroup>
-                <Button>Save!</Button>
+                <Button>Deposit</Button>
                 <InputGroup>
               <h4></h4>
               <InputGroupAddon addonType="prepend">Remove From Savings $:</InputGroupAddon>
               <Input placeholder="Amount" type="number" step="1" />
               <InputGroupAddon addonType="append">.00</InputGroupAddon>
                 </InputGroup>
-                <Button>Remove</Button> 
+                <Button>Withdraw</Button> 
               </Col>
             </Row>
           </TabPane>
