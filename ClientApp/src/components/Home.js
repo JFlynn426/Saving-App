@@ -10,7 +10,8 @@ export class Home extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: '1'
+      activeTab: '',
+      goals: []
     };
   }
 
@@ -23,81 +24,69 @@ export class Home extends Component {
   }
   static displayName = Home.name;
   componentDidMount = () => {
-
+    this.getGoals()
   }
-
+  getGoals = () => {
+    axios.get('/api/GetGoals').then(resp => {
+      console.log({ resp })
+      this.setState({
+        goals: resp.data,
+        activeTab: `${resp.data[0].id}`
+      })
+      console.log(this.state.activeTab)
+    })
+  }
   render () {
     return (
       <div>
         <Nav tabs>
-          <NavItem>
+        {this.state.goals.map(goal => {
+          return(
+            <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
-            >
-              Saving Goal 1
+              className={classnames({ active: this.state.activeTab === `${goal.id}` })}
+              onClick={() => { this.toggle(`${goal.id}`); }}
+              >{goal.title}
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
-            >
-              Savings Goal 2
-            </NavLink>
-          </NavItem>
+          )
+        })}
         </Nav>
+         {this.state.goals.map(goal => {
+             return (
         <TabContent activeTab={this.state.activeTab}>
-        <h1>College Fund</h1>
-          <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-              <div className="goal">
+           <TabPane tabId= {`${goal.id}`} >
+            <h1>{goal.title}</h1>
+              <Row>
+                <Col sm="12">
+                <div className="goal">
+                  <section>
+                <h2>Savings Goal</h2>
+                <h2>${goal.goal}</h2>
+                </section>
                 <section>
-              <h2>Savings Goal</h2>
-              <h2>$500</h2>
-              </section>
-              <section>
-                <h2>Amount Saved</h2>
-                <h2>$250</h2>
-              </section>
-              </div>
-              <InputGroup>
-              <h4></h4>
-              <InputGroupAddon addonType="prepend">Add To Savings $:</InputGroupAddon>
-              <Input placeholder="Amount" type="number" step="1" />
-              <InputGroupAddon addonType="append">.00</InputGroupAddon>
-                </InputGroup>
-                <Button>Deposit</Button>
+                  <h2>Amount Saved</h2>
+                  <h2>${goal.saved}</h2>
+                </section>
+                </div>
                 <InputGroup>
-              <h4></h4>
-              <InputGroupAddon addonType="prepend">Remove From Savings $:</InputGroupAddon>
-              <Input placeholder="Amount" type="number" step="1" />
-              <InputGroupAddon addonType="append">.00</InputGroupAddon>
-                </InputGroup>
-                <Button>Withdraw</Button> 
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
-              </Col>
-              <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
+                <InputGroupAddon addonType="prepend">Add To Savings $:</InputGroupAddon>
+                <Input placeholder="Amount" type="number" step="1" />
+                <InputGroupAddon addonType="append">.00</InputGroupAddon>
+                  </InputGroup>
+                  <Button>Deposit</Button>
+                  <InputGroup>
+                <InputGroupAddon addonType="prepend">Remove From Savings $:</InputGroupAddon>
+                <Input placeholder="Amount" type="number" step="1" />
+                <InputGroupAddon addonType="append">.00</InputGroupAddon>
+                  </InputGroup>
+                  <Button>Withdraw</Button> 
+                </Col>
+              </Row>
+            </TabPane>
+            </TabContent>
+          )
+        })}
       </div>
     );
   }
