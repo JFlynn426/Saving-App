@@ -11,7 +11,9 @@ export class Home extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '',
-      goals: []
+      goals: [],
+      addMoney: [],
+      subtractMoney: []
     };
   }
 
@@ -24,16 +26,38 @@ export class Home extends Component {
   }
   static displayName = Home.name;
   componentDidMount = () => {
-    this.getGoals()
+    this.getInitialGoals()
+  }
+  getInitialGoals = () => {
+    axios.get(`/api/GetGoals/${this.state.activeTab}`).then(resp => {
+      console.log({ resp })
+      this.setState({
+        goals: resp.data,
+        activeTab: `${resp.data[0].id}`
+      })
+    })
   }
   getGoals = () => {
     axios.get('/api/GetGoals').then(resp => {
       console.log({ resp })
       this.setState({
         goals: resp.data,
-        activeTab: `${resp.data[0].id}`
       })
-      console.log(this.state.activeTab)
+    })
+  }
+  addToSavings = () => {
+    axios.put(`/api/UpdateSaved/${this.state.activeTab}`, {
+      "NewGoal": `${this.state.goals[this.state.activeTab].goal+this.state.addMoney}`})
+      .then(this.getGoals())
+  }
+  updateToSaved = (event) => {
+    this.setState({
+      addMoney: event.target.value
+    })
+  }
+  updateToWithdraw = (event) => {
+    this.setState({
+      subtractMoney: event.target.value
     })
   }
   render () {
@@ -42,7 +66,7 @@ export class Home extends Component {
         <Nav tabs>
         {this.state.goals.map(goal => {
           return(
-            <NavItem>
+            <NavItem key={goal.id}>
             <NavLink
               className={classnames({ active: this.state.activeTab === `${goal.id}` })}
               onClick={() => { this.toggle(`${goal.id}`); }}
@@ -54,7 +78,7 @@ export class Home extends Component {
         </Nav>
          {this.state.goals.map(goal => {
              return (
-        <TabContent activeTab={this.state.activeTab}>
+        <TabContent activeTab={this.state.activeTab} key={goal.id}>
            <TabPane tabId= {`${goal.id}`} >
             <h1>{goal.title}</h1>
               <Row>
@@ -71,13 +95,13 @@ export class Home extends Component {
                 </div>
                 <InputGroup>
                 <InputGroupAddon addonType="prepend">Add To Savings $:</InputGroupAddon>
-                <Input placeholder="Amount" type="number" step="1" />
+                <Input type="number" step="1"  onChange={this.updateToSaved}></Input>
                 <InputGroupAddon addonType="append">.00</InputGroupAddon>
                   </InputGroup>
                   <Button>Deposit</Button>
                   <InputGroup>
                 <InputGroupAddon addonType="prepend">Remove From Savings $:</InputGroupAddon>
-                <Input placeholder="Amount" type="number" step="1" />
+                <Input type="number" step="1"  onChange={this.updateToWithdraw}></Input>
                 <InputGroupAddon addonType="append">.00</InputGroupAddon>
                   </InputGroup>
                   <Button>Withdraw</Button> 
