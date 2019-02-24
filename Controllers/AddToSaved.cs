@@ -9,26 +9,27 @@ using saving_app.Models;
 namespace saving_app.Controllers
 {
     [Route("api/[controller]")]
-    public class UpdateSavedController : Controller
+    public class AddToSavedController : Controller
     {
         private SavingGoalContext db;
-        public UpdateSavedController()
+        public AddToSavedController()
         {
             this.db= new SavingGoalContext();
         }
-        public class NewSavedViewModel
+        public class AddSavedViewModel
             {
-                public int NewSaved { get; set; }
+                public int AddSaved { get; set; }
             }
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult<SavingGoal>> Put([FromRoute] int id, [FromBody] NewSavedViewModel NewSaved)
+        public async Task<ActionResult<List<SavingGoal>>> Put([FromRoute] int id, [FromBody] AddSavedViewModel AddSaved)
         {
             var ChangedSaved = this.db.SavingGoal.First(SavingGoal => SavingGoal.Id == id);
-            ChangedSaved.Goal = NewSaved.NewSaved;
+            ChangedSaved.Saved += AddSaved.AddSaved;
             await this.db.SaveChangesAsync();
-            return ChangedSaved;
+            var results = this.db.SavingGoal.OrderBy(goal => goal.Id);
+            return results.ToList();
         }
     }
 }

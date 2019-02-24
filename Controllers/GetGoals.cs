@@ -19,7 +19,7 @@ namespace saving_app.Controllers
     [HttpGet]
     public async Task<ActionResult<List<SavingGoal>>> GetGoals()
     {
-        var results = this.db.SavingGoal;
+        var results = this.db.SavingGoal.OrderBy(goal => goal.Id);
         return await results.ToListAsync();
     }
     }
