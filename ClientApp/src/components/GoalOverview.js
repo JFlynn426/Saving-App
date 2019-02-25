@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Progress } from 'reactstrap';
 import axios from 'axios'
+import Goal from './Goal';
 
 export class GoalOverview extends Component {
   
@@ -17,11 +19,11 @@ export class GoalOverview extends Component {
       striped: false,
       color: "blue",
       className: "progress",
-      barClassName: "progbar" // used to add class to the inner progress-bar element
+      barClassName: "progbar"
     }
     super(props);
     this.state = {
-      goals: []
+      goals: [],
     }
   }
   componentDidMount = () => {
@@ -34,30 +36,32 @@ export class GoalOverview extends Component {
         })
       })
     }
-  
+    changeAmount = (goalid, amount) => {
+      axios.put(`/api/UpdateGoal/${goalid}`, {
+        "NewGoal": amount,
+      }).then(resp => 
+          this.setState({
+            goals: resp.data
+          }))
+    }
+    changeName = (goalid, name) => {
+      axios.put(`/api/UpdateName/${goalid}`, {
+        "NewName": name,
+      }).then(resp => 
+          this.setState({
+            goals: resp.data
+          }))
+    }
   render () {
     
     return (
       <div>
         <h1>Savings Goals</h1>
         {this.state.goals.map(goal => {
+          console.log({goal})
           return(
-            <div>
-            <div className="GoalDisplay">
-            <h5>{goal.title}</h5>
-            <h5>${goal.goal}/${goal.saved}</h5>
-            <div className="buttons">
-            <Button className="editgoal" color="primary">Edit Goal Name</Button>
-            <Button color="primary">Edit Goal Amount</Button>
-            </div>
-            </div>
-            <section className="progressbar">
-            <div className="text-center">{Math.round(goal.saved/goal.goal*100)}%</div>
-      <Progress value={goal.saved} max={goal.goal}/>
-      </section>
-            </div>
-          )})}
-        
+            <Goal goal={goal} updateName={this.changeName} updateAmount={this.changeAmount}/>
+          )})}  
       </div>
     );
   }

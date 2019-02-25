@@ -49,13 +49,13 @@ render () {
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Goal Amount $:</InputGroupText>
         </InputGroupAddon>
-        <Input onChange={this.updateGoal}/>
+        <Input type="number" onChange={this.updateGoal}/>
       </InputGroup>
       <InputGroup>
         <InputGroupAddon addonType="prepend">
           <InputGroupText>Initial Investment $:</InputGroupText>
         </InputGroupAddon>
-        <Input  onChange={this.updateInvestment}/>
+        <Input type="number" onChange={this.updateInvestment}/>
       </InputGroup>
             <Button color="primary" onClick={this.addToSavings}>New Goal</Button>
             </Row>
