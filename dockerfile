@@ -1,4 +1,4 @@
 FROM microsoft/dotnet:2.2-sdk
 WORKDIR /app
 COPY . .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet dotnet-saving-app.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet Saving-App.dll
