@@ -29,7 +29,7 @@ namespace content
       if (!optionsBuilder.IsConfigured)
       {
         var envConn = Environment.GetEnvironmentVariable("DATABASE_URL");
-        var conn = "server=localhost;database=saving_app;User Id=dev; Password= dev";
+        var conn = "server=localhost;database=Capstone;User Id=dev; Password= dev";
         if (envConn != null)
         {
           conn = ConvertPostConnectionToConnectionString(envConn);
@@ -44,6 +44,9 @@ namespace content
     {
       modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
 
+      modelBuilder.Entity<SavingGoal>().HasData(
+        new SavingGoal { Id = -1, Title = "Rainy Day", Goal = 1000, Saved = 100 }
+      );
     }
 
 
