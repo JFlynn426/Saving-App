@@ -4,7 +4,7 @@ import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios'
 
-export class Home extends Component {
+export class EditSavings extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,7 @@ export class Home extends Component {
       });
     }
   }
-  static displayName = Home.name;
+  static displayName = EditSavings.name;
   componentDidMount = () => {
     this.getInitialGoals()
   }
@@ -121,13 +121,13 @@ export class Home extends Component {
                 <Input type="number" step="1"  onChange={this.updateToSavings}></Input>
                 <InputGroupAddon addonType="append">.00</InputGroupAddon>
                   </InputGroup>
-                  <Button onClick={this.addToSavings}>Deposit</Button>
+                  <Button color="primary" onClick={this.addToSavings}>Deposit</Button>
                   <InputGroup>
                 <InputGroupAddon addonType="prepend">Remove From Savings $:</InputGroupAddon>
                 <Input type="number" step="1"  onChange={this.updateToWithdraw}></Input>
                 <InputGroupAddon addonType="append">.00</InputGroupAddon>
                   </InputGroup>
-                  <Button onClick={this.withdrawFromSavings}>Withdraw</Button>
+                  <Button color="primary" onClick={this.withdrawFromSavings}>Withdraw</Button>
                    
                   </Row>
                 

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
+import { EditSavings } from './components/EditSavings';
 import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-import { Login } from './components/Login'
+import { GoalOverview } from './components/GoalOverview';
+import { NewGoal } from './components/NewGoal'
 
 export default class App extends Component {
   static displayName = App.name;
@@ -12,9 +12,9 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path= '/login' component={Login} />
-        <Route path='/counter' component={Counter} />
+        <Route path='/EditSavings' component={EditSavings} />
+        <Route path= '/NewGoal' component={NewGoal} />
+        <Route path='/GoalOverview' component={GoalOverview} />
         <Route path='/fetch-data' component={FetchData} />
       </Layout>
     );
