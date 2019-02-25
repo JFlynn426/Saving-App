@@ -25,13 +25,13 @@ html {
   padding: 50px 0 10px 0;
 }
 .goal {
-  padding: 20px 0 0 0;
+  padding: 0 0 0 0;
   display: flex;
   justify-content: space-around;
 }
 h1 {
   text-align: center;
-  padding: 20px 0 0 0;
+  padding: 20px 0 20px 0;
 }
 .GoalDisplay {
   display: flex;
@@ -49,4 +49,7 @@ margin-left: auto;
 }
 .buttons {
  margin-left: auto;
+}
+.editgoals {
+  display: none;
 }

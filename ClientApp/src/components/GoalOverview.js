@@ -39,6 +39,7 @@ export class GoalOverview extends Component {
     
     return (
       <div>
+        <h1>Savings Goals</h1>
         {this.state.goals.map(goal => {
           return(
             <div>
