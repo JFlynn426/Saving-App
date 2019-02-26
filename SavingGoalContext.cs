@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using saving_app.Models;
@@ -16,13 +17,27 @@ namespace saving_app
         {
         }
 
+        private string ConvertPostConnectionToConnectionString(string connection)
+    {
+      var _connection = connection.Replace("postgres://", String.Empty);
+      var output = Regex.Split(_connection, ":|@|/");
+      return $"server={output[2]};database={output[4]};User Id={output[0]}; password={output[1]}; port={output[3]}";
+    }
+
+    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("server=localhost;database=SavingGoal;user id=flynn;password=dev");
-            }
+                var envConn = Environment.GetEnvironmentVariable("DATABASE_URL");
+                var conn = "server=localhost;database=SavingGoal;user id=flynn;password=dev";
+                if (envConn != null)
+        {
+          conn = ConvertPostConnectionToConnectionString(envConn);
+        }
+        optionsBuilder.UseNpgsql(conn);
+      }
+    
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
