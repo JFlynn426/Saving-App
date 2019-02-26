@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Button, Row, } from 'reactstrap';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import axios from 'axios'
 export class NewGoal extends Component {

@@ -24,7 +24,7 @@ namespace saving_app.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult<List<SavingGoal>>> Put([FromRoute] int id, [FromBody] NewNameViewModel NewName)
+        public ActionResult<List<SavingGoal>> Put([FromRoute] int id, [FromBody] NewNameViewModel NewName)
         {
             var ChangedGoal = this.db.SavingGoal.First(SavingGoal => SavingGoal.Id == id);
             ChangedGoal.Title = NewName.NewName;

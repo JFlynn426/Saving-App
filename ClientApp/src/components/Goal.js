@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col } from 'reactstrap';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, FormGroup, Input } from 'reactstrap';
 import { Progress } from 'reactstrap';
-import axios from 'axios'
+
 
 class Goal extends Component {
     constructor(props) {
@@ -21,6 +19,7 @@ class Goal extends Component {
       this.state ={
         isEditingName :false,
         isEditingAmount: false,
+        isDeletingGoal: false,
         amount: '',
         name: '',
     }
@@ -51,6 +50,9 @@ this.setState({
       sendApiCallToUpdateAmount = () =>{
         this.props.updateAmount(this.props.goal.id, this.state.amount)
     }
+    sendApiCallToDeleteGoal = () => {
+      this.props.removeGoal(this.props.goal.id)
+    }
     render() {
         const goal = this.props.goal
         return (
@@ -59,8 +61,9 @@ this.setState({
             <h5>{goal.title}</h5>
             <h5>${goal.goal}/${goal.saved}</h5>
             <div className="buttons">
-            <Button color="primary" onClick={() => this.toggleNameForm()} id={`${goal.id}names`}>Edit Goal Name</Button>
-            <Button color="primary" onClick={() => this.toggleAmountForm()} id={`${goal.id}amounts`}>Edit Goal Amount</Button>
+            <Button color="primary" onClick={() => this.toggleNameForm()} id={`${goal.id}names`}>Edit Name</Button>
+            <Button color="primary" onClick={() => this.toggleAmountForm()} id={`${goal.id}amounts`}>Edit Amount</Button>
+            <Button color="warning" onClick={() => this.toggleDeleteForm()}>Delete</Button>
             </div>
             </div>
             {this.state.isEditingName &&  <FormGroup id={`${goal.id}name`}>
@@ -71,6 +74,8 @@ this.setState({
           <Input type="number" name="password"  placeholder="Goal Amount" onChange={this.updateAmount}/>
           <Button color="primary" onClick={this.sendApiCallToUpdateAmount}>Update Goal Amount</Button>
         </FormGroup>}
+        {this.state.isDeletingGoal && <div><h5>Are you sure you want to delete this goal?</h5>
+        <Button color="warning">Delete</Button></div>}
             <section className="progressbar">
             <div className="text-center">{Math.round(goal.saved/goal.goal*100)}%</div>
             <Progress value={goal.saved} max={goal.goal}/>

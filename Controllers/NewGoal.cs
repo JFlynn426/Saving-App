@@ -23,12 +23,13 @@ namespace saving_app.Controllers
       return newSavingGoal;
     }
      [HttpDelete("{id}")]
-        public async Task<ActionResult<SavingGoal>> Delete([FromRoute] int id)
+        public async Task<ActionResult<List<SavingGoal>>> Delete([FromRoute] int id)
          {
       var GoalToRemove = this.db.SavingGoal.FirstOrDefault(SavingGoal => SavingGoal.Id == id);
       this.db.SavingGoal.Remove(GoalToRemove);
       await this.db.SaveChangesAsync();
-      return GoalToRemove;
+      var results = this.db.SavingGoal.OrderBy(goal => goal.Id);
+      return results.ToList();
     }
     }
 }

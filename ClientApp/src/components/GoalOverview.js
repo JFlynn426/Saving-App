@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col } from 'reactstrap';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Progress } from 'reactstrap';
 import axios from 'axios'
 import Goal from './Goal';
@@ -52,6 +50,12 @@ export class GoalOverview extends Component {
             goals: resp.data
           }))
     }
+    deleteGoal = (goalid) => {
+      axios.delete(`/api/UpdateName/${goalid}`).then(resp => 
+        this.setState({
+          goals: resp.data
+        }))
+    }
   render () {
     
     return (
@@ -60,7 +64,7 @@ export class GoalOverview extends Component {
         {this.state.goals.map(goal => {
           console.log({goal})
           return(
-            <Goal goal={goal} updateName={this.changeName} updateAmount={this.changeAmount}/>
+            <Goal goal={goal} removeGoal={this.deleteGoal} updateName={this.changeName} updateAmount={this.changeAmount}/>
           )})}  
       </div>
     );

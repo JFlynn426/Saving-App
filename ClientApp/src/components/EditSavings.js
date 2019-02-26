@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Row, Col } from 'reactstrap';
+import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios'
 
