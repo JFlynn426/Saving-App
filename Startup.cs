@@ -31,8 +31,8 @@ namespace saving_app
 
             }).AddJwtBearer(options =>
             {
-                options.Authority = "https://dewseph.auth0.com/";
-                options.Audience = "https://places.i.have.been.api";
+                options.Authority = "https://dev-yf4skfb4.auth0.com";
+                options.Audience = "https://savingsapp.api.com";
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

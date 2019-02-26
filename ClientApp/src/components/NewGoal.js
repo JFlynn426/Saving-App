@@ -2,15 +2,34 @@ import React, { Component } from 'react';
 import { Button, Row, } from 'reactstrap';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import axios from 'axios'
+import Auth from './Auth/Auth.js';
+const auth = new Auth();
 export class NewGoal extends Component {
 constructor(props) {
     super(props);
     this.state = {
         goalTitle: '',
         goalAmount: '',
-        initialInvestment: ''
+        initialInvestment: '',
+        authed: {
+          isLoggedIn: false
+        }
       };
     }
+    componentDidMount = () => {
+      if (auth.isAuthenticated()) {
+        auth.getProfile((err, profile) => {
+            this.setState({
+                authed: {
+                    isLoggedIn: true,
+                }
+            })
+        })
+    } else {
+      window.location.href = "/"
+  
+    }
+  }
     updateTitle = (event) => {
         this.setState({
             goalTitle: event.target.value
@@ -31,7 +50,8 @@ constructor(props) {
           "Title": this.state.goalTitle,
           "Goal": this.state.goalAmount,
           "Saved": this.state.initialInvestment
-        })
+        }, {
+          headers: { "Authorization": "Bearer " + auth.getAccessToken() }})
           .then(window.location.href= "/EditSavings")
         }
 render () {

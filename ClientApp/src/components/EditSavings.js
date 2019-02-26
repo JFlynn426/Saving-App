@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Row, Col } from 'reactstrap';
 import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import classnames from 'classnames';
+import Auth from './Auth/Auth.js';
 import axios from 'axios'
-
+const auth = new Auth();
 export class EditSavings extends Component {
   constructor(props) {
     super(props);
@@ -14,10 +15,12 @@ export class EditSavings extends Component {
       goals: [],
       addMoney: '',
       subtractMoney: '',
-      refreshedSaved: false
-    };
+      refreshedSaved: false,
+      authed: {
+        isLoggedIn: false,
+      }
   }
-
+  }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -27,10 +30,23 @@ export class EditSavings extends Component {
   }
   static displayName = EditSavings.name;
   componentDidMount = () => {
-    this.getInitialGoals()
+    if (auth.isAuthenticated()) {
+      this.getInitialGoals()
+      auth.getProfile((err, profile) => {
+          this.setState({
+              authed: {
+                  isLoggedIn: true,
+              }
+          })
+      })
+  } else {
+    window.location.href = "/"
+
   }
+}
   getInitialGoals = () => {
-    axios.get(`/api/GetGoals/${this.state.activeTab}`).then(resp => {
+    axios.get(`/api/GetGoals/${this.state.activeTab}`, {
+      headers: { "Authorization": "Bearer " + auth.getAccessToken() } }).then(resp => {
       console.log({ resp })
       this.setState({
         goals: resp.data,
@@ -49,7 +65,8 @@ export class EditSavings extends Component {
   addToSavings = () => {
     axios.put(`/api/AddToSaved/${this.state.activeTab}`, {
       "AddSaved": this.state.addMoney
-    })
+    } , {
+      headers: { "Authorization": "Bearer " + auth.getAccessToken() }})
       .then(resp => {
         this.setState({
           goals: resp.data,
@@ -59,7 +76,8 @@ export class EditSavings extends Component {
   withdrawFromSavings = () => {
     axios.put(`/api/RemoveFromSaved/${this.state.activeTab}`, {
       "RemoveSaved": this.state.subtractMoney
-    })
+    } , {
+      headers: { "Authorization": "Bearer " + auth.getAccessToken() }})
       .then(resp => {
         this.setState({
           goals: resp.data,

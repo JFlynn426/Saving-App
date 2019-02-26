@@ -53,3 +53,11 @@ margin-left: auto;
 .editgoals {
   display: none;
 }
+.Login {
+  display: flex;
+  height: 100%
+}
+.loginbutton {
+  margin: auto;
+  margin-top: 50px;
+}

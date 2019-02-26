@@ -5,8 +5,8 @@ export default class Auth {
     auth0 = new auth0.WebAuth({
         domain: 'dev-yf4skfb4.auth0.com',
         clientID: 'x5tAE7fdv3Ck7JlptWKspfwCwTcjA7L6',
-        redirectUri: 'https://localhost:3000/callback',
-        audience: 'https://places.i.have.been.api',
+        redirectUri: 'https://saving-app.herokuapp.com/callback',
+        audience: 'https://savingsapp.api.com',
         responseType: 'token id_token',
         scope: 'openid profile'
     });
@@ -24,14 +24,16 @@ export default class Auth {
         this.auth0.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
-                history.replace('/home');
+                this.goToGoals('/GoalOverview');
             } else if (err) {
                 history.replace('/');
                 console.log(err);
             }
         });
     }
-
+    goToGoals = () => {
+        window.location.href = "/GoalOverview"
+    }
     setSession(authResult) {
         // Set the time that the Access Token will expire at
         let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
@@ -39,7 +41,7 @@ export default class Auth {
         localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem('expires_at', expiresAt);
         // navigate to the home route
-        history.replace('/home');
+        history.replace('/GoalOverview');
     }
 
 

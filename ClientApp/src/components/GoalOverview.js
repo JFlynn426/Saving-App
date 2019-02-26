@@ -13,6 +13,9 @@ export class GoalOverview extends Component {
     super(props);
     this.state = {
       goals: [],
+      authed: {
+        isLoggedIn: false
+    }
     }
   }
   componentDidMount = () => {
@@ -22,23 +25,30 @@ export class GoalOverview extends Component {
           this.setState({
               authed: {
                   isLoggedIn: true,
-                  profile
               }
           })
       })
+  } else {
+    window.location.href = "/"
+
   }
 }
 
     getGoals = () => {
-      axios.get('/api/GetGoals').then(resp => {
+      axios.get('/api/GetGoals', {
+        headers: {
+            "Authorization": "Bearer " + auth.getAccessToken()
+        }
+    }).then(resp => {
         this.setState({
           goals: resp.data,
         })
       })
     }
     changeAmount = (goalid, amount) => {
-      axios.put(`/api/UpdateGoal/${goalid}`, {
-        "NewGoal": amount,
+      axios.put(`/api/UpdateGoal/${goalid}`,
+      {"NewGoal": amount} , {
+        headers: { "Authorization": "Bearer " + auth.getAccessToken() }
       }).then(resp => 
           this.setState({
             goals: resp.data
@@ -47,13 +57,14 @@ export class GoalOverview extends Component {
     changeName = (goalid, name) => {
       axios.put(`/api/UpdateName/${goalid}`, {
         "NewName": name,
-      }).then(resp => 
+      }, {  headers: { "Authorization": "Bearer " + auth.getAccessToken() },}).then(resp => 
           this.setState({
             goals: resp.data
           }))
     }
     deleteGoal = (goalid) => {
-      axios.delete(`/api/NewGoal/${goalid}`).then(resp => 
+      axios.delete(`/api/NewGoal/${goalid}`, {
+        headers: { "Authorization": "Bearer " + auth.getAccessToken() }} ).then(resp => 
         this.setState({
           goals: resp.data
         }))
