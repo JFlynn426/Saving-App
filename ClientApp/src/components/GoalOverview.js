@@ -2,31 +2,33 @@ import React, { Component } from 'react';
 import { Progress } from 'reactstrap';
 import axios from 'axios'
 import Goal from './Goal';
-
+import Auth from './Auth/Auth.js';
+const auth = new Auth();
 export class GoalOverview extends Component {
   
   static displayName = GoalOverview.name;
   
 
   constructor (props) {
-    Progress.propTypes = {
-      multi: false,
-      bar: false,
-      tag: "",
-      animated: false,
-      striped: false,
-      color: "blue",
-      className: "progress",
-      barClassName: "progbar"
-    }
     super(props);
     this.state = {
       goals: [],
     }
   }
   componentDidMount = () => {
-    this.getGoals()
+    if (auth.isAuthenticated()) {
+      this.getGoals()
+      auth.getProfile((err, profile) => {
+          this.setState({
+              authed: {
+                  isLoggedIn: true,
+                  profile
+              }
+          })
+      })
   }
+}
+
     getGoals = () => {
       axios.get('/api/GetGoals').then(resp => {
         this.setState({
@@ -51,7 +53,7 @@ export class GoalOverview extends Component {
           }))
     }
     deleteGoal = (goalid) => {
-      axios.delete(`/api/UpdateName/${goalid}`).then(resp => 
+      axios.delete(`/api/NewGoal/${goalid}`).then(resp => 
         this.setState({
           goals: resp.data
         }))
@@ -62,9 +64,8 @@ export class GoalOverview extends Component {
       <div>
         <h1>Savings Goals</h1>
         {this.state.goals.map(goal => {
-          console.log({goal})
           return(
-            <Goal goal={goal} removeGoal={this.deleteGoal} updateName={this.changeName} updateAmount={this.changeAmount}/>
+            <Goal key={goal.id} goal={goal} removeGoal={this.deleteGoal} updateName={this.changeName} updateAmount={this.changeAmount}/>
           )})}  
       </div>
     );

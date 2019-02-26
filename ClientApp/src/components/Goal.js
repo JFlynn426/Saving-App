@@ -5,16 +5,6 @@ import { Progress } from 'reactstrap';
 
 class Goal extends Component {
     constructor(props) {
-    Progress.propTypes = {
-        multi: false,
-        bar: false,
-        tag: "",
-        animated: false,
-        striped: false,
-        color: "blue",
-        className: "progress",
-        barClassName: "progbar"
-      }
       super(props);
       this.state ={
         isEditingName :false,
@@ -34,6 +24,11 @@ this.setState({
             isEditingAmount: !this.state.isEditingAmount
         })
     }
+    toggleDeleteForm = () => {
+      this.setState({
+          isDeletingGoal: !this.state.isDeletingGoal
+      })
+  }
     updateName = (event) => {
         this.setState({
           name: event.target.value
@@ -63,7 +58,7 @@ this.setState({
             <div className="buttons">
             <Button color="primary" onClick={() => this.toggleNameForm()} id={`${goal.id}names`}>Edit Name</Button>
             <Button color="primary" onClick={() => this.toggleAmountForm()} id={`${goal.id}amounts`}>Edit Amount</Button>
-            <Button color="warning" onClick={() => this.toggleDeleteForm()}>Delete</Button>
+            <Button color="danger" onClick={() => this.toggleDeleteForm()}>Delete</Button>
             </div>
             </div>
             {this.state.isEditingName &&  <FormGroup id={`${goal.id}name`}>
@@ -75,7 +70,7 @@ this.setState({
           <Button color="primary" onClick={this.sendApiCallToUpdateAmount}>Update Goal Amount</Button>
         </FormGroup>}
         {this.state.isDeletingGoal && <div><h5>Are you sure you want to delete this goal?</h5>
-        <Button color="warning">Delete</Button></div>}
+        <Button color="danger" onClick={this.sendApiCallToDeleteGoal}>Delete</Button></div>}
             <section className="progressbar">
             <div className="text-center">{Math.round(goal.saved/goal.goal*100)}%</div>
             <Progress value={goal.saved} max={goal.goal}/>
