@@ -43,8 +43,8 @@ namespace saving_app
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
-            // modelBuilder.Entity<SavingGoal>().HasData( 
-            //   new SavingGoal {Id = -1, Title : "Rainy Day", Goal : 1000, Saved:100 } );
+            modelBuilder.Entity<SavingGoal>().HasData( 
+              new SavingGoal {Id = -1, Title = "Rainy Day", Goal = 1000, Saved = 100 } );
         }
         public DbSet<SavingGoal> SavingGoal { get; set; }
     }

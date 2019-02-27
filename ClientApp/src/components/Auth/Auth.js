@@ -1,11 +1,11 @@
 import auth0 from 'auth0-js';
 import history from './History';
-
 export default class Auth {
     auth0 = new auth0.WebAuth({
         domain: 'dev-yf4skfb4.auth0.com',
         clientID: 'x5tAE7fdv3Ck7JlptWKspfwCwTcjA7L6',
-        redirectUri: 'https://saving-app.herokuapp.com/callback',
+        redirectUri: `${process.env.NODE_ENV === "development" ? "https://localhost:5001/callback" :
+        "https://saving-app.herokuapp.com/callback"}`,
         audience: 'https://savingsapp.api.com',
         responseType: 'token id_token',
         scope: 'openid profile'
@@ -19,6 +19,7 @@ export default class Auth {
         this.isAuthenticated = this.isAuthenticated.bind(this);
         this.getProfile = this.getProfile.bind(this);
     }
+    
 
     handleAuthentication() {
         this.auth0.parseHash((err, authResult) => {
