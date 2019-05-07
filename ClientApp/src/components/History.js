@@ -63,7 +63,7 @@ export class EditSavings extends Component {
   }
  
   addToSavings = () => {
-    axios.put(`/api/Savings/${this.state.activeTab}`, {
+    axios.put(`/api/AddToSaved/${this.state.activeTab}`, {
       "AddSaved": this.state.addMoney
     } , {
       headers: { "Authorization": "Bearer " + auth.getAccessToken() }})
@@ -74,8 +74,8 @@ export class EditSavings extends Component {
       })
   }
   withdrawFromSavings = () => {
-    axios.put(`/api/Savings/${this.state.activeTab}`, {
-      "AddSaved": -this.state.subtractMoney
+    axios.put(`/api/RemoveFromSaved/${this.state.activeTab}`, {
+      "RemoveSaved": this.state.subtractMoney
     } , {
       headers: { "Authorization": "Bearer " + auth.getAccessToken() }})
       .then(resp => {
